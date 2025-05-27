@@ -2,9 +2,13 @@ import { useSearch } from "../context/useSearch";
 
 interface SearchBarProps {
   onSearch: (location: string) => void;
+  isBtnVisible?: boolean;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar: React.FC<SearchBarProps> = ({
+  onSearch,
+  isBtnVisible = false,
+}) => {
   const { searchQuery, setSearchQuery } = useSearch();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,14 +20,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 my-4">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="text"
-        placeholder="Enter location..."
+        placeholder="Search country or city here..."
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        className="border px-3 py-2 rounded-md w-full font-bold"
+        className="border px-3 py-2 rounded-md w-full placeholder:opacity-50 placeholder:font-normal font-semibold"
       />
+      {isBtnVisible && (
+        <button className="hover:cursor-pointer bg-blue-600 text-white rounded-lg p-2 px-3 shadow-sm">
+          Search
+        </button>
+      )}
     </form>
   );
 };

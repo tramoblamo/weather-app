@@ -38,9 +38,9 @@ function HomePage() {
   }, [setError]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       <SearchBar onSearch={handleSearch} />
-      <div className="text-right pb-4">
+      <div className="text-right">
         <Link className="text-blue-500 text-sm underline" to="/search">
           Search
         </Link>

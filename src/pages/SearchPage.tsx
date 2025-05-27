@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { HistoryListItem } from "../components/HistoryListItem";
+import { History } from "../components/History";
 import { Loading } from "../components/Loading";
 import { SearchBar } from "../components/SearchBar";
 import { useSearch } from "../context/useSearch";
@@ -28,9 +28,9 @@ function SearchPage() {
   }, [setError]);
 
   return (
-    <div>
-      <SearchBar onSearch={onSearchWithNavigate} />
-      <div className="text-right pb-4">
+    <div className="flex flex-col gap-3">
+      <SearchBar onSearch={onSearchWithNavigate} isBtnVisible={true} />
+      <div className="text-right">
         <Link className="text-blue-500 text-sm underline" to="/">
           Home
         </Link>
@@ -38,18 +38,7 @@ function SearchPage() {
       {loading && <Loading />}
       {error && <p className="text-sm text-red-500">{error}</p>}
       {history.length > 0 ? (
-        <section>
-          <header className="py-4 font-semibold">Search History</header>
-          <ul className="bg-white p-4 rounded-xl shadow-xl">
-            {history.map((entry) => (
-              <HistoryListItem
-                key={entry.key}
-                data={entry}
-                onHistoryUpdate={onHistoryUpdate}
-              />
-            ))}
-          </ul>
-        </section>
+        <History data={{ history }} onHistoryUpdate={onHistoryUpdate} />
       ) : null}
     </div>
   );
