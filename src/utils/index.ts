@@ -5,6 +5,9 @@ import type {
   OpenWeatherIconSize,
 } from "../types";
 
+const BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL;
+const OPEN_WEATHER_ICON_URL = "https://openweathermap.org/img/wn";
+
 function metersToKm(meters: number) {
   return meters / 1000;
 }
@@ -39,24 +42,20 @@ function groupForecastsByDay(entries: ForecastItemData[]): GroupedForecast {
 }
 
 function constructWeatherUrl(lat: number, lon: number) {
-  return `${
-    import.meta.env.VITE_WEATHER_API_BASE_URL
-  }/weather?lat=${lat}&lon=${lon}`;
+  return `${BASE_URL}/weather?lat=${lat}&lon=${lon}`;
 }
 
 function constructForecastUrl(lat: number, lon: number) {
-  return `${
-    import.meta.env.VITE_WEATHER_API_BASE_URL
-  }/forecast?lat=${lat}&lon=${lon}`;
+  return `${BASE_URL}/forecast?lat=${lat}&lon=${lon}`;
 }
 
 function constructGeoUrl(query: string) {
-  return `${import.meta.env.VITE_WEATHER_API_BASE_URL}/geo?q=${query}`;
+  return `${BASE_URL}/geo?q=${query}`;
 }
 
 function constructIconUrl(iconStr: string, size?: OpenWeatherIconSize) {
-  if (!size) return `https://openweathermap.org/img/wn/${iconStr}.png`;
-  return `https://openweathermap.org/img/wn/${iconStr}${size}.png`;
+  if (!size) return `${OPEN_WEATHER_ICON_URL}/${iconStr}.png`;
+  return `${OPEN_WEATHER_ICON_URL}/${iconStr}${size}.png`;
 }
 
 /**
@@ -69,18 +68,20 @@ function getWindDegreeOffset(deg: number): number {
   return deg + offset;
 }
 
-function fmtGeolocationName(data: GeoLocationData) {
-  return `${data.name}, ${data.country}`;
+function fmtGeolocationName({ name, country }: GeoLocationData) {
+  return `${name}, ${country}`;
 }
 
 export {
   constructForecastUrl,
-  constructGeoUrl, constructIconUrl,
+  constructGeoUrl,
+  constructIconUrl,
   constructWeatherUrl,
-  fmtDate, fmtGeolocationName, fmtTempToCelsius,
+  fmtDate,
+  fmtGeolocationName,
+  fmtTempToCelsius,
   fmtTime,
   getWindDegreeOffset,
   groupForecastsByDay,
-  metersToKm
+  metersToKm,
 };
-

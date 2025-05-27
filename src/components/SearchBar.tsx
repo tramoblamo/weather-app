@@ -25,7 +25,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         type="text"
         placeholder="Search country or city here..."
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={({ target: { value } }) => setSearchQuery(value)}
         className="border px-3 py-2 rounded-md w-full placeholder:opacity-50 placeholder:font-normal font-semibold"
       />
       {isBtnVisible && (

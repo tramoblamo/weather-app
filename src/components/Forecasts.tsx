@@ -3,12 +3,12 @@ import { type ForecastData } from "../types";
 import { fmtDate, groupForecastsByDay } from "../utils";
 import { ForecastListItem } from "./ForecastListItem";
 
-const Forecasts: React.FC<{ data: ForecastData }> = ({ data }) => {
+const Forecasts: React.FC<{ data: ForecastData }> = ({ data: { list } }) => {
   return (
     <section>
       <header className="py-4">5-day Forecast (3 Hours)</header>
       <ul className="bg-white p-4 rounded-xl shadow-xl">
-        {Object.entries(groupForecastsByDay(data.list))
+        {Object.entries(groupForecastsByDay(list))
           .slice(0, 5)
           .map(([date, entries]) => {
             return (

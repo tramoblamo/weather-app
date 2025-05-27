@@ -22,4 +22,4 @@ const SearchBtn: React.FC<{ data: GeoLocationDataWithKey }> = ({ data }) => {
   );
 };
 
-export { SearchBtn};
+export { SearchBtn };

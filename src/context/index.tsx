@@ -31,7 +31,7 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
       const result: GeoLocationData[] = await res.json();
 
       if (result.length > 0) {
-        const firstMatch = result[0];
+        const [firstMatch] = result;
         const { lat, lon, name, country } = firstMatch;
         setLocation({ lat, lon, name, country });
         addToLocationHistory(firstMatch);
