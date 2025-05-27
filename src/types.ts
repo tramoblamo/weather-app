@@ -43,12 +43,16 @@ interface GeoLocationData {
   country: string;
 }
 
+interface GeoLocationDataWithKey extends GeoLocationData {
+  key: string;
+}
+
 export type {
   ForecastData,
   ForecastItemData,
   GeoLocationData,
+  GeoLocationDataWithKey,
   GroupedForecast,
   OpenWeatherIconSize,
-  WeatherData
+  WeatherData,
 };
-

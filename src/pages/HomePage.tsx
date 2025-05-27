@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Forecasts } from "../components/Forecasts";
 import { Loading } from "../components/Loading";
@@ -13,6 +14,7 @@ function HomePage() {
     location,
     loading: isSearchLoading,
     error,
+    setError,
     handleSearch,
   } = useSearch();
 
@@ -30,6 +32,10 @@ function HomePage() {
     useData<ForecastData>(forecastUrl);
 
   const isLoading = isSearchLoading || isWeatherLoading || isForecastLoading;
+
+  useEffect(() => {
+    setError("");
+  }, [setError]);
 
   return (
     <div>

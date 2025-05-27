@@ -1,6 +1,7 @@
 import { createContext, useState, type FC, type ReactNode } from "react";
 import { type GeoLocationData } from "../types";
 import { constructGeoUrl } from "../utils";
+import { addToLocationHistory } from "../utils/locationHistory";
 
 interface Store {
   location: GeoLocationData | null;
@@ -9,6 +10,8 @@ interface Store {
   handleSearch: (query: string, navigateCallback?: () => void) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
+  setLocation: (data: GeoLocationData | null) => void;
+  setError: (err: string) => void;
 }
 
 const Context = createContext<Store | null>(null);
@@ -28,8 +31,10 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
       const result: GeoLocationData[] = await res.json();
 
       if (result.length > 0) {
-        const { lat, lon, name, country } = result[0];
+        const firstMatch = result[0];
+        const { lat, lon, name, country } = firstMatch;
         setLocation({ lat, lon, name, country });
+        addToLocationHistory(firstMatch);
 
         if (navigateCallback) {
           navigateCallback();
@@ -56,6 +61,8 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
         handleSearch,
         searchQuery,
         setSearchQuery,
+        setLocation,
+        setError,
       }}
     >
       {children}

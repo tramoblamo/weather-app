@@ -1,5 +1,6 @@
 import type {
   ForecastItemData,
+  GeoLocationData,
   GroupedForecast,
   OpenWeatherIconSize,
 } from "../types";
@@ -68,15 +69,18 @@ function getWindDegreeOffset(deg: number): number {
   return deg + offset;
 }
 
+function fmtGeolocationName(data: GeoLocationData) {
+  return `${data.name}, ${data.country}`;
+}
+
 export {
   constructForecastUrl,
-  constructGeoUrl,
-  constructIconUrl,
+  constructGeoUrl, constructIconUrl,
   constructWeatherUrl,
-  fmtDate,
-  fmtTempToCelsius,
+  fmtDate, fmtGeolocationName, fmtTempToCelsius,
   fmtTime,
   getWindDegreeOffset,
   groupForecastsByDay,
-  metersToKm,
+  metersToKm
 };
+
