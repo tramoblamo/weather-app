@@ -6,7 +6,9 @@ interface Store {
   location: GeoLocationData | null;
   error: string;
   loading: boolean;
-  handleSearch: (queryString: string) => void;
+  handleSearch: (query: string, navigateCallback?: () => void) => void;
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
 }
 
 const Context = createContext<Store | null>(null);
@@ -15,8 +17,10 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
   const [location, setLocation] = useState<GeoLocationData | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string, navigateCallback?: () => void) => {
+    setSearchQuery(query);
     setLoading(true);
     setError("");
     try {
@@ -26,6 +30,10 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
       if (result.length > 0) {
         const { lat, lon, name, country } = result[0];
         setLocation({ lat, lon, name, country });
+
+        if (navigateCallback) {
+          navigateCallback();
+        }
       } else {
         setLocation(null);
         setError("Invalid country or city");
@@ -40,7 +48,16 @@ const AppContext: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <Context.Provider value={{ location, error, loading, handleSearch }}>
+    <Context.Provider
+      value={{
+        location,
+        error,
+        loading,
+        handleSearch,
+        searchQuery,
+        setSearchQuery,
+      }}
+    >
       {children}
     </Context.Provider>
   );

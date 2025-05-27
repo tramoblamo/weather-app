@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useSearch } from "../context/useSearch";
 
 interface SearchBarProps {
   onSearch: (location: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [input, setInput] = useState("");
+  const { searchQuery, setSearchQuery } = useSearch();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = input.trim();
+    const trimmed = searchQuery.trim();
     if (trimmed) {
       onSearch(trimmed);
     }
@@ -20,8 +20,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       <input
         type="text"
         placeholder="Enter location..."
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
         className="border px-3 py-2 rounded-md w-full font-bold"
       />
     </form>

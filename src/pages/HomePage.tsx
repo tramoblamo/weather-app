@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Forecasts } from "../components/Forecasts";
 import { Loading } from "../components/Loading";
 import { SearchBar } from "../components/SearchBar";
@@ -33,6 +34,11 @@ function HomePage() {
   return (
     <div>
       <SearchBar onSearch={handleSearch} />
+      <div className="text-right pb-4">
+        <Link className="text-blue-500 text-sm underline" to="/search">
+          Search
+        </Link>
+      </div>
       {isLoading && <Loading />}
       {error && <p className="text-sm text-red-500">{error}</p>}
       {weatherData && <Weather data={weatherData} />}
