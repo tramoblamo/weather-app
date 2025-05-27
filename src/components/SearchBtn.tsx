@@ -17,7 +17,7 @@ const SearchBtn: React.FC<{ data: GeoLocationDataWithKey }> = ({ data }) => {
         navigate("/");
       }}
     >
-      <HiMagnifyingGlass />
+      <HiMagnifyingGlass className="w-4 h-4 md:w-5 md:h-5" />
     </button>
   );
 };

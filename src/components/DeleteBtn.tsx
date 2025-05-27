@@ -9,7 +9,7 @@ const DeleteBtn: React.FC<{
   const handleDelete = () => onHistoryUpdate(removeHistoryEntryByKey(key));
   return (
     <button onClick={handleDelete} className="hover:cursor-pointer">
-      <HiOutlineTrash />
+      <HiOutlineTrash className="w-4 h-4 md:w-5 md:h-5" />
     </button>
   );
 };
