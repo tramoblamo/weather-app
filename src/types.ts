@@ -1,13 +1,19 @@
+interface WeatherDetail {
+  description: string;
+  icon: string;
+}
+
+interface MainDetail {
+  temp: number;
+  temp_min: number;
+  temp_max: number;
+  humidity: number;
+}
+
 interface WeatherData {
   dt: number;
-  main: {
-    temp: number;
-    humidity: number;
-  };
-  weather: {
-    description: string;
-    icon: string;
-  }[];
+  main: MainDetail;
+  weather: WeatherDetail[];
   wind: {
     speed: number;
     deg: number;
@@ -15,4 +21,34 @@ interface WeatherData {
   visibility: number;
 }
 
-export type { WeatherData };
+interface ForecastItemData {
+  dt: number;
+  main: MainDetail;
+  weather: WeatherDetail[];
+  dt_txt: string;
+}
+
+interface ForecastData {
+  list: ForecastItemData[];
+}
+
+type GroupedForecast = Record<string, ForecastItemData[]>;
+
+type OpenWeatherIconSize = "@2x" | "@3x";
+
+interface GeoLocationData {
+  lat: number;
+  lon: number;
+  name: string;
+  country: string;
+}
+
+export type {
+  ForecastData,
+  ForecastItemData,
+  GeoLocationData,
+  GroupedForecast,
+  OpenWeatherIconSize,
+  WeatherData
+};
+

@@ -1,47 +1,26 @@
-import { useEffect, useState } from "react";
-import { useData, useLocation } from "../hooks";
 import { type WeatherData } from "../types";
-import { fmtDate, fmtTempToCelsius, metersToKm } from "../utils";
-import { Loading } from "./Loading";
+import {
+  constructIconUrl,
+  fmtDate,
+  fmtTempToCelsius,
+  metersToKm,
+} from "../utils";
+import { WindIcon } from "./WindIcon";
 
-function Weather() {
-  const { coords, geolocationPositionError } = useLocation();
-  const [url, setUrl] = useState("");
-  const [error, setError] = useState("");
-  const { data } = useData<WeatherData>(url);
-
-  useEffect(() => {
-    if (coords.lat !== null && coords.lon !== null) {
-      const { lat, lon } = coords;
-      setUrl(
-        `${
-          import.meta.env.VITE_WEATHER_API_BASE_URL
-        }/weather?lat=${lat}&lon=${lon}`
-      );
-    }
-  }, [coords]);
-
-  useEffect(() => {
-    if (geolocationPositionError) {
-      setError(geolocationPositionError.message);
-    }
-  }, [geolocationPositionError]);
-
-  if (error) return <div>{error}</div>;
-
-  if (coords.lat === null || coords.lon === null) {
-    return <Loading />;
-  }
-
-  if (!data) return <Loading />;
-
+const Weather: React.FC<{ data: WeatherData }> = ({ data }) => {
   return (
-    <section className="bg-white p-4 rounded-xl">
-      <div>{fmtDate(data.dt)}</div>
+    <section className="bg-white p-4 rounded-xl shadow-xl">
+      <div>
+        {fmtDate(data.dt, {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        })}
+      </div>
       <div className="flex justify-center py-4">
         <div className="px-4">
           <img
-            src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
+            src={constructIconUrl(data.weather[0].icon, "@2x")}
             alt={data.weather[0].description}
           />
         </div>
@@ -61,9 +40,11 @@ function Weather() {
         </div>
         <div className="text-center">
           <div className="text-gray-400 capitalize text-sm pb-1">winds</div>
-          <div>
-            {/* TODO: display arrow */} {data.wind.speed}{" "}
-            <span className="text-xs">m/s</span>
+          <div className="flex gap-1 items-center">
+            <WindIcon deg={data.wind.deg} />
+            <span>
+              {data.wind.speed} <span className="text-xs">m/s</span>
+            </span>
           </div>
         </div>
         <div className="text-center">
@@ -77,6 +58,6 @@ function Weather() {
       </div>
     </section>
   );
-}
+};
 
 export { Weather };

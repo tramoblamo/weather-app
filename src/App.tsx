@@ -1,12 +1,12 @@
-import { Weather } from "./components/Weather";
+import { HomePage } from "./pages/HomePage";
 
 function App() {
   return (
-      <main className="bg-gray-200 h-screen">
-        <div className="max-w-2xs mx-auto py-4">
-          <Weather />
-        </div>
-      </main>
+    <main className="bg-gray-200 min-h-screen">
+      <div className="max-w-xs mx-auto py-4">
+        <HomePage />
+      </div>
+    </main>
   );
 }
 

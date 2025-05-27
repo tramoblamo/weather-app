@@ -1,46 +1,47 @@
 import { useEffect, useState } from "react";
 
-function useData<T = unknown>(url: string): { data: T | undefined } {
-  const [data, setData] = useState<T | undefined>();
+function useData<T = unknown>(
+  url: string
+): { data: T | null; isLoading: boolean; isError: boolean } {
+  const [data, setData] = useState<T | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   useEffect(() => {
     if (url) {
+      setIsLoading(true);
+      setIsError(false);
+
       let ignore = false;
+
       fetch(url)
-        .then((response) => response.json())
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error fetching data");
+          }
+          return response.json();
+        })
         .then((json) => {
           if (!ignore) {
             setData(json);
+            setIsLoading(false);
+          }
+        })
+        .catch(() => {
+          if (!ignore) {
+            setData(null);
+            setIsError(true);
+            setIsLoading(false);
           }
         });
+
       return () => {
         ignore = true;
       };
     }
   }, [url]);
-  return { data };
+
+  return { data, isLoading, isError };
 }
 
-function useLocation() {
-  const [coords, setCoords] = useState<{
-    lat: number | null;
-    lon: number | null;
-  }>({ lat: null, lon: null });
-
-  const [geolocationPositionError, setGeolocationPositionError] =
-    useState<GeolocationPositionError | null>(null);
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => {
-        setCoords({ lat: latitude, lon: longitude });
-      },
-      (error) => {
-        setGeolocationPositionError(error);
-      }
-    );
-  }, []);
-
-  return { coords, geolocationPositionError };
-}
-
-export { useData, useLocation };
+export { useData };
