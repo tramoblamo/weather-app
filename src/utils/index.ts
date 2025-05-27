@@ -8,13 +8,8 @@ import type {
 const BASE_URL = import.meta.env.VITE_WEATHER_API_BASE_URL;
 const OPEN_WEATHER_ICON_URL = "https://openweathermap.org/img/wn";
 
-function metersToKm(meters: number) {
+function convertMetersToKm(meters: number) {
   return meters / 1000;
-}
-
-function fmtDate(ts: number, options: Intl.DateTimeFormatOptions) {
-  const date = new Date(ts * 1000);
-  return date.toLocaleDateString("en-US", options);
 }
 
 function fmtTempToCelsius(temp: number) {
@@ -72,16 +67,26 @@ function fmtGeolocationName({ name, country }: GeoLocationData) {
   return `${name}, ${country}`;
 }
 
+function isToday(ts: number) {
+  const today = new Date();
+  const date = new Date(ts * 1000);
+  return (
+    today.getFullYear() === date.getFullYear() &&
+    today.getMonth() === date.getMonth() &&
+    today.getDate() === date.getDate()
+  );
+}
+
 export {
   constructForecastUrl,
   constructGeoUrl,
   constructIconUrl,
   constructWeatherUrl,
-  fmtDate,
   fmtGeolocationName,
   fmtTempToCelsius,
   fmtTime,
   getWindDegreeOffset,
   groupForecastsByDay,
-  metersToKm,
+  isToday,
+  convertMetersToKm,
 };

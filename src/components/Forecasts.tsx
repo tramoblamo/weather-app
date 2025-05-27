@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { type ForecastData } from "../types";
-import { fmtDate, groupForecastsByDay } from "../utils";
+import { groupForecastsByDay, isToday } from "../utils";
 import { ForecastListItem } from "./ForecastListItem";
 
 const Forecasts: React.FC<{ data: ForecastData }> = ({ data: { list } }) => {
@@ -11,14 +11,16 @@ const Forecasts: React.FC<{ data: ForecastData }> = ({ data: { list } }) => {
         {Object.entries(groupForecastsByDay(list))
           .slice(0, 5)
           .map(([date, entries]) => {
+            const [{ dt }] = entries;
+            const dateDisplay = isToday(dt)
+              ? "Today"
+              : new Intl.DateTimeFormat("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                }).format(new Date(dt * 1000));
             return (
               <Fragment key={date}>
-                <div className="py-3 text-gray-500 text-sm">
-                  {fmtDate(entries[0].dt, { day: "numeric", month: "long" })
-                    .split(" ")
-                    .reverse()
-                    .join(" ")}
-                </div>
+                <div className="py-3 text-gray-500 text-sm">{dateDisplay}</div>
                 {entries.map((entry) => (
                   <ForecastListItem key={entry.dt} data={entry} />
                 ))}

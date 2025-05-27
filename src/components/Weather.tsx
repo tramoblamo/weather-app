@@ -1,9 +1,8 @@
 import { type WeatherData } from "../types";
 import {
   constructIconUrl,
-  fmtDate,
   fmtTempToCelsius,
-  metersToKm,
+  convertMetersToKm,
 } from "../utils";
 import { WindIcon } from "./WindIcon";
 
@@ -19,11 +18,11 @@ const Weather: React.FC<{ data: WeatherData }> = ({
   return (
     <section className="bg-white p-4 rounded-xl shadow-xl">
       <div>
-        {fmtDate(dt, {
-          month: "long",
+        {new Intl.DateTimeFormat("en-US", {
           day: "numeric",
+          month: "long",
           year: "numeric",
-        })}
+        }).format(new Date(dt * 1000))}
       </div>
       <div className="flex justify-center py-4">
         <div className="px-4">
@@ -58,7 +57,7 @@ const Weather: React.FC<{ data: WeatherData }> = ({
             visibility
           </div>
           <div>
-            {metersToKm(visibility)} <span className="text-xs">km</span>
+            {convertMetersToKm(visibility)} <span className="text-xs">km</span>
           </div>
         </div>
       </div>
